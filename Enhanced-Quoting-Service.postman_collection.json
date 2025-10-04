@@ -1,0 +1,294 @@
+{
+	"info": {
+		"_postman_id": "enhanced-quoting-service-001",
+		"name": "Enhanced Quoting Service",
+		"description": "Complete test collection for Enhanced Quoting Service with detailed rule-based calculations",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auto Insurance - Young Male Driver (Multiple Surcharges)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"age\": 24,\n  \"gender\": \"male\",\n  \"address\": \"Beijing, Chaoyang District\",\n  \"insuranceType\": \"auto\",\n  \"vehicleModel\": \"Tesla Model 3\",\n  \"vehicleYear\": 2023,\n  \"vehicleMake\": \"Tesla\",\n  \"name\": \"Zhang Wei\",\n  \"email\": \"zhangwei@example.com\",\n  \"phone\": \"+86-13812345678\",\n  \"isUrbanArea\": true\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/insurance/quote/generate",
+					"host": ["{{baseUrl}}"],
+					"path": ["insurance", "quote", "generate"]
+				},
+				"description": "Test case: Young male driver (age < 25) in urban area driving luxury vehicle. Expected: Age surcharge +20%, Gender +8%, Location +10%, Vehicle +12%"
+			},
+			"response": []
+		},
+		{
+			"name": "Health Insurance - Smoker",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"age\": 35,\n  \"gender\": \"female\",\n  \"address\": \"Shanghai, Pudong District\",\n  \"insuranceType\": \"health\",\n  \"smoker\": true,\n  \"name\": \"Li Ming\",\n  \"email\": \"liming@example.com\",\n  \"isUrbanArea\": true\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/insurance/quote/generate",
+					"host": ["{{baseUrl}}"],
+					"path": ["insurance", "quote", "generate"]
+				},
+				"description": "Test case: Smoker health insurance. Expected: Smoker risk factor +15%"
+			},
+			"response": []
+		},
+		{
+			"name": "Auto Insurance - Sports Car (High Risk)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"age\": 28,\n  \"gender\": \"male\",\n  \"address\": \"Los Angeles, California\",\n  \"insuranceType\": \"auto\",\n  \"vehicleModel\": \"Ferrari F8 Sports Car\",\n  \"vehicleYear\": 2024,\n  \"vehicleMake\": \"Ferrari\",\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  \"isUrbanArea\": true\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/insurance/quote/generate",
+					"host": ["{{baseUrl}}"],
+					"path": ["insurance", "quote", "generate"]
+				},
+				"description": "Test case: Sports car insurance. Expected: Sports car risk +25%, Male +8%, Urban +10%"
+			},
+			"response": []
+		},
+		{
+			"name": "Auto Insurance - Optimal Age Discount",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"age\": 30,\n  \"gender\": \"female\",\n  \"address\": \"Rural Area, Hebei Province\",\n  \"insuranceType\": \"auto\",\n  \"vehicleModel\": \"Toyota Camry\",\n  \"vehicleYear\": 2022,\n  \"vehicleMake\": \"Toyota\",\n  \"name\": \"Liu Mei\",\n  \"email\": \"liumei@example.com\",\n  \"isUrbanArea\": false\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/insurance/quote/generate",
+					"host": ["{{baseUrl}}"],
+					"path": ["insurance", "quote", "generate"]
+				},
+				"description": "Test case: Optimal age (25-35) in rural area with standard vehicle. Expected: Age discount -5%, No location surcharge"
+			},
+			"response": []
+		},
+		{
+			"name": "Life Insurance - High Risk Occupation",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"age\": 40,\n  \"gender\": \"male\",\n  \"address\": \"Shenzhen, Guangdong\",\n  \"insuranceType\": \"life\",\n  \"occupation\": \"Commercial Pilot\",\n  \"name\": \"Chen Yu\",\n  \"email\": \"chenyu@example.com\",\n  \"isUrbanArea\": true\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/insurance/quote/generate",
+					"host": ["{{baseUrl}}"],
+					"path": ["insurance", "quote", "generate"]
+				},
+				"description": "Test case: High-risk occupation. Expected: Occupation risk +20%"
+			},
+			"response": []
+		},
+		{
+			"name": "Home Insurance - High Value Property",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"age\": 45,\n  \"gender\": \"female\",\n  \"address\": \"Shanghai, Jing'an District\",\n  \"insuranceType\": \"home\",\n  \"propertyType\": \"Villa\",\n  \"propertyValue\": 1500000,\n  \"name\": \"Wang Fang\",\n  \"email\": \"wangfang@example.com\",\n  \"isUrbanArea\": true\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/insurance/quote/generate",
+					"host": ["{{baseUrl}}"],
+					"path": ["insurance", "quote", "generate"]
+				},
+				"description": "Test case: High-value property (>$1M). Expected: Property risk +18%, Location +10%"
+			},
+			"response": []
+		},
+		{
+			"name": "Async Quote Generation",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"age\": 30,\n  \"gender\": \"female\",\n  \"address\": \"Guangzhou, Tianhe District\",\n  \"insuranceType\": \"home\",\n  \"propertyType\": \"Apartment\",\n  \"propertyValue\": 800000,\n  \"name\": \"Zhao Min\",\n  \"email\": \"zhaomin@example.com\",\n  \"isUrbanArea\": true\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/insurance/quote/generate-async",
+					"host": ["{{baseUrl}}"],
+					"path": ["insurance", "quote", "generate-async"]
+				},
+				"description": "Test case: Asynchronous quote generation"
+			},
+			"response": []
+		},
+		{
+			"name": "Auto Insurance - Senior Driver",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"age\": 68,\n  \"gender\": \"male\",\n  \"address\": \"Beijing, Haidian District\",\n  \"insuranceType\": \"auto\",\n  \"vehicleModel\": \"Honda Accord\",\n  \"vehicleYear\": 2020,\n  \"name\": \"Li Qiang\",\n  \"email\": \"liqiang@example.com\",\n  \"isUrbanArea\": true\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/insurance/quote/generate",
+					"host": ["{{baseUrl}}"],
+					"path": ["insurance", "quote", "generate"]
+				},
+				"description": "Test case: Senior driver (age > 65). Expected: Age surcharge +15%"
+			},
+			"response": []
+		},
+		{
+			"name": "Auto Insurance - SUV in City",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"age\": 35,\n  \"gender\": \"male\",\n  \"address\": \"New York City\",\n  \"insuranceType\": \"auto\",\n  \"vehicleModel\": \"Toyota RAV4 SUV\",\n  \"vehicleYear\": 2023,\n  \"vehicleMake\": \"Toyota\",\n  \"name\": \"Mike Johnson\",\n  \"email\": \"mike@example.com\",\n  \"isUrbanArea\": true\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/insurance/quote/generate",
+					"host": ["{{baseUrl}}"],
+					"path": ["insurance", "quote", "generate"]
+				},
+				"description": "Test case: SUV in urban area. Expected: Vehicle risk +8%, Location +10%"
+			},
+			"response": []
+		},
+		{
+			"name": "Health Insurance - Non-Smoker",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"age\": 28,\n  \"gender\": \"male\",\n  \"address\": \"Shenzhen, Nanshan District\",\n  \"insuranceType\": \"health\",\n  \"smoker\": false,\n  \"medicalHistory\": \"None\",\n  \"name\": \"Zhang San\",\n  \"email\": \"zhangsan@example.com\",\n  \"isUrbanArea\": true\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/insurance/quote/generate",
+					"host": ["{{baseUrl}}"],
+					"path": ["insurance", "quote", "generate"]
+				},
+				"description": "Test case: Non-smoker health insurance. Expected: No smoking surcharge"
+			},
+			"response": []
+		},
+		{
+			"name": "Validation Error - Age Too Young",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"age\": 15,\n  \"address\": \"Test City\",\n  \"insuranceType\": \"auto\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/insurance/quote/generate",
+					"host": ["{{baseUrl}}"],
+					"path": ["insurance", "quote", "generate"]
+				},
+				"description": "Test case: Validation error - age below minimum. Expected: HTTP 400 with validation error"
+			},
+			"response": []
+		},
+		{
+			"name": "Validation Error - Invalid Insurance Type",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"age\": 30,\n  \"address\": \"Test City\",\n  \"insuranceType\": \"invalid_type\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/insurance/quote/generate",
+					"host": ["{{baseUrl}}"],
+					"path": ["insurance", "quote", "generate"]
+				},
+				"description": "Test case: Validation error - invalid insurance type. Expected: HTTP 400 with validation error"
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080/api/v1",
+			"type": "string"
+		}
+	]
+}
+

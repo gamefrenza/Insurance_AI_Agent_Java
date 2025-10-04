@@ -1,6 +1,5 @@
-package com.xai.insuranceagent.model;
+package com.xai.insuranceagent.model.quote;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,13 +8,16 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
+/**
+ * Quote request model for insurance quoting
+ */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Customer implements Serializable {
+public class QuoteRequest implements Serializable {
 
-    @NotNull(message = "Age is required")
+    @NotNull(message = "Customer age is required")
     @Min(value = 18, message = "Age must be at least 18")
     @Max(value = 100, message = "Age must be at most 100")
     private Integer age;
@@ -24,31 +26,35 @@ public class Customer implements Serializable {
     private String gender;
 
     @NotBlank(message = "Address is required")
-    @Size(min = 5, max = 200, message = "Address must be between 5 and 200 characters")
     private String address;
 
     @NotBlank(message = "Insurance type is required")
     @Pattern(regexp = "auto|home|life|health", message = "Insurance type must be one of: auto, home, life, health")
-    @JsonProperty("insuranceType")
     private String insuranceType;
 
-    // Additional fields for auto insurance
-    private String vehicle;
+    // Auto insurance specific fields
+    private String vehicleModel;
+    private Integer vehicleYear;
+    private String vehicleMake;
 
-    // Additional fields for home insurance
+    // Health insurance specific fields
+    private Boolean smoker;
+    private String medicalHistory;
+
+    // Home insurance specific fields
     private String propertyType;
     private Double propertyValue;
 
-    // Additional fields for life insurance
+    // Life insurance specific fields
     private String occupation;
-    private Boolean smoker;
 
-    // Additional fields for health insurance
-    private String medicalHistory;
-
-    // Common fields
+    // Additional fields
     private String name;
     private String email;
     private String phone;
+
+    // City flag for location-based pricing
+    @Builder.Default
+    private Boolean isUrbanArea = false;
 }
 

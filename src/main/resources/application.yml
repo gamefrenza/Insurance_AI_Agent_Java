@@ -46,10 +46,17 @@ insurance:
       home: 800.0
       life: 500.0
       health: 600.0
+    use-external-api: false  # Set to true to use external Guidewire API
   underwriting:
     age:
       min: 18
       max: 75
     risk-factors:
       high-risk-threshold: 0.7
+  external-api:
+    guidewire:
+      url: ${GUIDEWIRE_API_URL:https://api.guidewire.example.com}
+      api-key: ${GUIDEWIRE_API_KEY:demo-api-key}
+      timeout-seconds: 30
+      enabled: false  # Enable when you have real API credentials
 
