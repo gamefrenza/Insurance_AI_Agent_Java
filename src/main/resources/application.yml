@@ -40,6 +40,10 @@ logging:
 
 # Insurance Business Rules
 insurance:
+  security:
+    api-key: ${API_KEY:your-api-key-here}
+    api-key-enabled: ${API_KEY_ENABLED:true}
+  
   quoting:
     base-rate:
       auto: 1200.0

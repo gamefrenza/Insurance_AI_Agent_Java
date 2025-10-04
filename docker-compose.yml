@@ -1,0 +1,63 @@
+version: '3.8'
+
+services:
+  insurance-agent:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: insurance-ai-agent
+    ports:
+      - "8080:8080"
+    environment:
+      # Application
+      SPRING_PROFILES_ACTIVE: dev
+      SERVER_PORT: 8080
+      
+      # Security
+      INSURANCE_SECURITY_API_KEY: ${API_KEY:-demo-api-key-12345}
+      INSURANCE_SECURITY_API_KEY_ENABLED: "false"  # Disabled for development
+      AES_SECRET_KEY: ${AES_SECRET_KEY:-YourSecretKey32CharactersLong!}
+      
+      # OpenAI
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-your-openai-key}
+      
+      # External APIs
+      GUIDEWIRE_API_URL: ${GUIDEWIRE_API_URL:-https://api.guidewire.example.com}
+      GUIDEWIRE_API_KEY: ${GUIDEWIRE_API_KEY:-demo-key}
+      CREDIT_SCORE_API_URL: ${CREDIT_SCORE_API_URL:-https://api.experian.example.com}
+      CREDIT_SCORE_API_KEY: ${CREDIT_SCORE_API_KEY:-demo-key}
+      DOCUSIGN_API_URL: ${DOCUSIGN_API_URL:-https://demo.docusign.net/restapi}
+      DOCUSIGN_API_KEY: ${DOCUSIGN_API_KEY:-demo-key}
+      
+      # Directories
+      TEMPLATE_DIR: /app/templates
+      OUTPUT_DIR: /app/output/documents
+      
+      # Java Options
+      JAVA_OPTS: "-Xms512m -Xmx1024m"
+    
+    volumes:
+      - ./templates:/app/templates:ro
+      - ./output:/app/output
+      - insurance-logs:/app/logs
+    
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:8080/api/v1/insurance/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    
+    restart: unless-stopped
+    
+    networks:
+      - insurance-network
+
+volumes:
+  insurance-logs:
+    driver: local
+
+networks:
+  insurance-network:
+    driver: bridge
+

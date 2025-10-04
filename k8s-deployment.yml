@@ -1,0 +1,190 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: insurance-agent
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: insurance-agent-config
+  namespace: insurance-agent
+data:
+  application.yml: |
+    server:
+      port: 8080
+    spring:
+      application:
+        name: insurance-ai-agent
+      session:
+        timeout: 30m
+    logging:
+      level:
+        root: INFO
+        com.xai.insuranceagent: DEBUG
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: insurance-agent-secrets
+  namespace: insurance-agent
+type: Opaque
+stringData:
+  api-key: "your-api-key-here"
+  aes-secret-key: "YourSecretKey32CharactersLong!"
+  openai-api-key: "your-openai-key-here"
+  guidewire-api-key: "your-guidewire-key"
+  credit-score-api-key: "your-experian-key"
+  docusign-api-key: "your-docusign-key"
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: insurance-agent
+  namespace: insurance-agent
+  labels:
+    app: insurance-agent
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: insurance-agent
+  template:
+    metadata:
+      labels:
+        app: insurance-agent
+    spec:
+      containers:
+      - name: insurance-agent
+        image: insurance-agent:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+          name: http
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: "prod"
+        - name: INSURANCE_SECURITY_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: insurance-agent-secrets
+              key: api-key
+        - name: AES_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: insurance-agent-secrets
+              key: aes-secret-key
+        - name: OPENAI_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: insurance-agent-secrets
+              key: openai-api-key
+        - name: JAVA_OPTS
+          value: "-Xms512m -Xmx1024m -XX:+UseG1GC"
+        resources:
+          requests:
+            memory: "768Mi"
+            cpu: "500m"
+          limits:
+            memory: "1536Mi"
+            cpu: "1000m"
+        livenessProbe:
+          httpGet:
+            path: /api/v1/insurance/health
+            port: 8080
+          initialDelaySeconds: 60
+          periodSeconds: 30
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /api/v1/insurance/health
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 3
+          failureThreshold: 3
+        volumeMounts:
+        - name: templates
+          mountPath: /app/templates
+          readOnly: true
+        - name: output
+          mountPath: /app/output
+      volumes:
+      - name: templates
+        emptyDir: {}
+      - name: output
+        emptyDir: {}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: insurance-agent-service
+  namespace: insurance-agent
+spec:
+  type: LoadBalancer
+  selector:
+    app: insurance-agent
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
+    name: http
+
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: insurance-agent-hpa
+  namespace: insurance-agent
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: insurance-agent
+  minReplicas: 2
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: insurance-agent-ingress
+  namespace: insurance-agent
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+spec:
+  tls:
+  - hosts:
+    - insurance-agent.yourdomain.com
+    secretName: insurance-agent-tls
+  rules:
+  - host: insurance-agent.yourdomain.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: insurance-agent-service
+            port:
+              number: 80
+

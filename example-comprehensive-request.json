@@ -1,0 +1,19 @@
+{
+  "customerId": "COMP-2024-001",
+  "customerName": "Zhang Wei",
+  "age": 30,
+  "gender": "male",
+  "address": "123 Chaoyang Road, Beijing, China",
+  "email": "zhangwei@example.com",
+  "phone": "+86-13812345678",
+  "insuranceType": "auto",
+  "vehicleModel": "Tesla Model 3",
+  "propertyValue": null,
+  "isSmoker": false,
+  "occupation": "Software Engineer",
+  "creditScore": 750,
+  "claimsHistory": 0,
+  "drivingRecord": "Clean",
+  "requireSignature": true
+}
+
