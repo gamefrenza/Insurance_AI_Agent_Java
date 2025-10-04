@@ -1,0 +1,201 @@
+package com.xai.insuranceagent.rules
+
+import com.xai.insuranceagent.model.underwriting.CustomerRiskProfile
+import com.xai.insuranceagent.model.underwriting.UnderwritingDecision
+
+global org.slf4j.Logger logger
+
+// Rule 1: Credit Score - Automatic Rejection
+rule "Low Credit Score - Reject"
+    when
+        $profile : CustomerRiskProfile(creditScore < 600)
+        $decision : UnderwritingDecision(decision == null)
+    then
+        logger.info("Rule triggered: Low Credit Score - Reject (Score: {})", $profile.getCreditScore());
+        $decision.setDecision("REJECT");
+        $decision.setDecisionReason("Credit score below minimum threshold (600)");
+        $decision.setRiskLevel("VERY_HIGH");
+        $decision.setRiskScore(95);
+        $decision.getRiskFactors().add("Credit score: " + $profile.getCreditScore());
+        update($decision);
+end
+
+// Rule 2: DUI - Automatic Rejection (Auto Insurance)
+rule "DUI History - Reject Auto Insurance"
+    when
+        $profile : CustomerRiskProfile(
+            insuranceType == "auto",
+            dui == true
+        )
+        $decision : UnderwritingDecision(decision == null)
+    then
+        logger.info("Rule triggered: DUI History - Reject");
+        $decision.setDecision("REJECT");
+        $decision.setDecisionReason("DUI history - high risk for auto insurance");
+        $decision.setRiskLevel("VERY_HIGH");
+        $decision.setRiskScore(98);
+        $decision.getRiskFactors().add("DUI on record");
+        update($decision);
+end
+
+// Rule 3: Previous Cancellation - Refer to Manual Review
+rule "Previous Cancellation - Refer"
+    when
+        $profile : CustomerRiskProfile(previousCancellation == true)
+        $decision : UnderwritingDecision(decision == null)
+    then
+        logger.info("Rule triggered: Previous Cancellation - Refer");
+        $decision.setDecision("REFER");
+        $decision.setReferralReason("Previous policy cancellation requires manual review");
+        $decision.setRequiresManualReview(true);
+        $decision.getRiskFactors().add("Previous policy cancellation");
+        update($decision);
+end
+
+// Rule 4: Excellent Credit Score - Approve with Discount
+rule "Excellent Credit Score - Approve"
+    when
+        $profile : CustomerRiskProfile(
+            creditScore >= 750,
+            claimsInLast3Years == 0
+        )
+        $decision : UnderwritingDecision(decision == null)
+    then
+        logger.info("Rule triggered: Excellent Credit Score - Approve (Score: {})", $profile.getCreditScore());
+        $decision.setDecision("APPROVE");
+        $decision.setDecisionReason("Excellent credit score and clean claims history");
+        $decision.setRiskLevel("LOW");
+        $decision.setRiskScore(15);
+        $decision.setPremiumMultiplier(0.9); // 10% discount
+        $decision.getPositiveFactors().add("Excellent credit score: " + $profile.getCreditScore());
+        $decision.getPositiveFactors().add("No claims in last 3 years");
+        update($decision);
+end
+
+// Rule 5: High Claims History - Extra Premium
+rule "High Claims History - Extra Premium"
+    when
+        $profile : CustomerRiskProfile(
+            claimsInLast3Years >= 3,
+            creditScore >= 600
+        )
+        $decision : UnderwritingDecision(decision == null || decision == "APPROVE")
+    then
+        logger.info("Rule triggered: High Claims History - Extra Premium (Claims: {})", $profile.getClaimsInLast3Years());
+        $decision.setDecision("APPROVE");
+        $decision.setDecisionReason("Approved with extra premium due to claims history");
+        $decision.setRiskLevel("HIGH");
+        $decision.setRiskScore(75);
+        $decision.setPremiumMultiplier(1.5); // 50% increase
+        $decision.setExtraPremium(500.0);
+        $decision.getRiskFactors().add("Multiple claims in last 3 years: " + $profile.getClaimsInLast3Years());
+        $decision.getConditions().add("No more than 1 claim in the next 2 years");
+        update($decision);
+end
+
+// Rule 6: Multiple Driving Violations - High Risk
+rule "Multiple Driving Violations - High Risk"
+    when
+        $profile : CustomerRiskProfile(
+            insuranceType == "auto",
+            drivingViolations >= 3,
+            creditScore >= 600
+        )
+        $decision : UnderwritingDecision(decision == null)
+    then
+        logger.info("Rule triggered: Multiple Driving Violations (Count: {})", $profile.getDrivingViolations());
+        $decision.setDecision("APPROVE");
+        $decision.setDecisionReason("Approved with increased premium due to driving violations");
+        $decision.setRiskLevel("HIGH");
+        $decision.setRiskScore(80);
+        $decision.setPremiumMultiplier(1.4); // 40% increase
+        $decision.getRiskFactors().add("Driving violations: " + $profile.getDrivingViolations());
+        $decision.getConditions().add("Must complete defensive driving course");
+        update($decision);
+end
+
+// Rule 7: Property in Flood Zone - Exclusion
+rule "Property in Flood Zone - Exclusion"
+    when
+        $profile : CustomerRiskProfile(
+            insuranceType == "home",
+            inFloodZone == true
+        )
+        $decision : UnderwritingDecision(decision == null || decision == "APPROVE")
+    then
+        logger.info("Rule triggered: Property in Flood Zone - Exclusion");
+        if ($decision.getDecision() == null) {
+            $decision.setDecision("APPROVE");
+            $decision.setRiskLevel("MEDIUM");
+            $decision.setRiskScore(60);
+        }
+        $decision.getExclusions().add("Flood damage not covered");
+        $decision.getRiskFactors().add("Property located in flood zone");
+        $decision.getConditions().add("Separate flood insurance required");
+        update($decision);
+end
+
+// Rule 8: Smoker - Extra Premium for Health/Life Insurance
+rule "Smoker - Extra Premium"
+    when
+        $profile : CustomerRiskProfile(
+            insuranceType in ("health", "life"),
+            smoker == true
+        )
+        $decision : UnderwritingDecision(decision == null || decision == "APPROVE")
+    then
+        logger.info("Rule triggered: Smoker - Extra Premium");
+        if ($decision.getDecision() == null) {
+            $decision.setDecision("APPROVE");
+            $decision.setRiskLevel("MEDIUM");
+            $decision.setRiskScore(55);
+        }
+        $decision.setPremiumMultiplier(($decision.getPremiumMultiplier() != null ? $decision.getPremiumMultiplier() : 1.0) * 1.3);
+        $decision.getRiskFactors().add("Smoker");
+        $decision.getConditions().add("Annual health screening required");
+        update($decision);
+end
+
+// Rule 9: Young Driver with Clean Record - Standard Approval
+rule "Young Driver Clean Record - Approve"
+    when
+        $profile : CustomerRiskProfile(
+            insuranceType == "auto",
+            age < 25,
+            age >= 18,
+            drivingViolations == 0,
+            atFaultAccidents == 0,
+            creditScore >= 650
+        )
+        $decision : UnderwritingDecision(decision == null)
+    then
+        logger.info("Rule triggered: Young Driver Clean Record - Approve");
+        $decision.setDecision("APPROVE");
+        $decision.setDecisionReason("Young driver with clean record");
+        $decision.setRiskLevel("MEDIUM");
+        $decision.setRiskScore(45);
+        $decision.setPremiumMultiplier(1.2); // 20% increase for age
+        $decision.getRiskFactors().add("Driver under 25");
+        $decision.getPositiveFactors().add("Clean driving record");
+        update($decision);
+end
+
+// Rule 10: Default Approval - Good Standing
+rule "Default Approval - Good Standing"
+    salience -100  // Low priority, runs last
+    when
+        $profile : CustomerRiskProfile(
+            creditScore >= 650,
+            creditScore < 750
+        )
+        $decision : UnderwritingDecision(decision == null)
+    then
+        logger.info("Rule triggered: Default Approval - Good Standing");
+        $decision.setDecision("APPROVE");
+        $decision.setDecisionReason("Standard approval - meets all minimum requirements");
+        $decision.setRiskLevel("MEDIUM");
+        $decision.setRiskScore(40);
+        $decision.setPremiumMultiplier(1.0); // Standard rate
+        update($decision);
+end
+

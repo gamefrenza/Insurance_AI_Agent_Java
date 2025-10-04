@@ -1,0 +1,188 @@
+{
+	"info": {
+		"_postman_id": "enhanced-underwriting-service-001",
+		"name": "Enhanced Underwriting Service",
+		"description": "Complete test collection for Enhanced Underwriting Service with Drools Rules Engine",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Excellent Credit - Should Approve",
+			"request": {
+				"method": "POST",
+				"header": [{"key": "Content-Type", "value": "application/json"}],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"customerId\": \"CUST-001\",\n  \"creditScore\": 800,\n  \"claimsInLast3Years\": 0,\n  \"drivingViolations\": 0,\n  \"atFaultAccidents\": 0,\n  \"dui\": false,\n  \"yearsLicensed\": 15,\n  \"yearsWithPreviousInsurer\": 5,\n  \"previousCancellation\": false,\n  \"previousDenial\": false,\n  \"insuranceType\": \"auto\",\n  \"age\": 35,\n  \"address\": \"Beijing, Haidian District\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/insurance/underwriting/assess",
+					"host": ["{{baseUrl}}"],
+					"path": ["insurance", "underwriting", "assess"]
+				},
+				"description": "Excellent credit profile should result in approval with discount"
+			}
+		},
+		{
+			"name": "Low Credit Score - Should Reject",
+			"request": {
+				"method": "POST",
+				"header": [{"key": "Content-Type", "value": "application/json"}],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"customerId\": \"CUST-002\",\n  \"creditScore\": 550,\n  \"claimsInLast3Years\": 2,\n  \"insuranceType\": \"auto\",\n  \"age\": 28,\n  \"address\": \"Shanghai\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/insurance/underwriting/assess",
+					"host": ["{{baseUrl}}"],
+					"path": ["insurance", "underwriting", "assess"]
+				},
+				"description": "Credit score below 600 should trigger automatic rejection"
+			}
+		},
+		{
+			"name": "DUI History - Should Reject",
+			"request": {
+				"method": "POST",
+				"header": [{"key": "Content-Type", "value": "application/json"}],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"customerId\": \"CUST-003\",\n  \"creditScore\": 680,\n  \"insuranceType\": \"auto\",\n  \"age\": 30,\n  \"dui\": true,\n  \"drivingViolations\": 1,\n  \"address\": \"Guangzhou\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/insurance/underwriting/assess",
+					"host": ["{{baseUrl}}"],
+					"path": ["insurance", "underwriting", "assess"]
+				},
+				"description": "DUI history should result in automatic rejection for auto insurance"
+			}
+		},
+		{
+			"name": "High Claims History - Extra Premium",
+			"request": {
+				"method": "POST",
+				"header": [{"key": "Content-Type", "value": "application/json"}],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"customerId\": \"CUST-004\",\n  \"creditScore\": 700,\n  \"claimsInLast3Years\": 4,\n  \"totalClaimAmount\": 12000.0,\n  \"insuranceType\": \"home\",\n  \"age\": 45,\n  \"hasSecuritySystem\": true,\n  \"address\": \"Shenzhen\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/insurance/underwriting/assess",
+					"host": ["{{baseUrl}}"],
+					"path": ["insurance", "underwriting", "assess"]
+				},
+				"description": "High claims history should result in approval with extra premium"
+			}
+		},
+		{
+			"name": "Smoker Health Insurance",
+			"request": {
+				"method": "POST",
+				"header": [{"key": "Content-Type", "value": "application/json"}],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"customerId\": \"CUST-005\",\n  \"creditScore\": 710,\n  \"insuranceType\": \"health\",\n  \"age\": 40,\n  \"smoker\": true,\n  \"medicalConditions\": [\"Hypertension\"],\n  \"address\": \"Beijing\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/insurance/underwriting/assess",
+					"host": ["{{baseUrl}}"],
+					"path": ["insurance", "underwriting", "assess"]
+				},
+				"description": "Smoker should have increased premium multiplier"
+			}
+		},
+		{
+			"name": "Property in Flood Zone",
+			"request": {
+				"method": "POST",
+				"header": [{"key": "Content-Type", "value": "application/json"}],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"customerId\": \"CUST-006\",\n  \"creditScore\": 730,\n  \"insuranceType\": \"home\",\n  \"age\": 50,\n  \"inFloodZone\": true,\n  \"hasSecuritySystem\": true,\n  \"propertyAge\": 25,\n  \"address\": \"Houston, Texas\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/insurance/underwriting/assess",
+					"host": ["{{baseUrl}}"],
+					"path": ["insurance", "underwriting", "assess"]
+				},
+				"description": "Flood zone property should have flood damage exclusion"
+			}
+		},
+		{
+			"name": "Async Underwriting Assessment",
+			"request": {
+				"method": "POST",
+				"header": [{"key": "Content-Type", "value": "application/json"}],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"customerId\": \"CUST-007\",\n  \"creditScore\": 690,\n  \"claimsInLast3Years\": 1,\n  \"insuranceType\": \"life\",\n  \"age\": 38,\n  \"occupation\": \"Engineer\",\n  \"smoker\": false,\n  \"address\": \"Hangzhou\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/insurance/underwriting/assess-async",
+					"host": ["{{baseUrl}}"],
+					"path": ["insurance", "underwriting", "assess-async"]
+				},
+				"description": "Async processing test"
+			}
+		},
+		{
+			"name": "Multiple Driving Violations",
+			"request": {
+				"method": "POST",
+				"header": [{"key": "Content-Type", "value": "application/json"}],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"customerId\": \"CUST-008\",\n  \"creditScore\": 670,\n  \"insuranceType\": \"auto\",\n  \"age\": 26,\n  \"drivingViolations\": 4,\n  \"atFaultAccidents\": 2,\n  \"yearsLicensed\": 8,\n  \"dui\": false,\n  \"address\": \"Los Angeles\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/insurance/underwriting/assess",
+					"host": ["{{baseUrl}}"],
+					"path": ["insurance", "underwriting", "assess"]
+				},
+				"description": "Multiple violations should result in high risk with conditions"
+			}
+		},
+		{
+			"name": "Previous Cancellation - Referral",
+			"request": {
+				"method": "POST",
+				"header": [{"key": "Content-Type", "value": "application/json"}],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"customerId\": \"CUST-009\",\n  \"creditScore\": 680,\n  \"insuranceType\": \"auto\",\n  \"age\": 35,\n  \"previousCancellation\": true,\n  \"claimsInLast3Years\": 0,\n  \"address\": \"Chicago\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/insurance/underwriting/assess",
+					"host": ["{{baseUrl}}"],
+					"path": ["insurance", "underwriting", "assess"]
+				},
+				"description": "Previous cancellation should trigger manual review referral"
+			}
+		},
+		{
+			"name": "Young Driver Clean Record",
+			"request": {
+				"method": "POST",
+				"header": [{"key": "Content-Type", "value": "application/json"}],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"customerId\": \"CUST-010\",\n  \"creditScore\": 690,\n  \"insuranceType\": \"auto\",\n  \"age\": 22,\n  \"drivingViolations\": 0,\n  \"atFaultAccidents\": 0,\n  \"dui\": false,\n  \"yearsLicensed\": 4,\n  \"address\": \"Seattle\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/insurance/underwriting/assess",
+					"host": ["{{baseUrl}}"],
+					"path": ["insurance", "underwriting", "assess"]
+				},
+				"description": "Young driver with clean record should be approved with age surcharge"
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080/api/v1",
+			"type": "string"
+		}
+	]
+}
+

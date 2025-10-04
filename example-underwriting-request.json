@@ -1,0 +1,20 @@
+{
+  "customerId": "CUST-2024-001",
+  "creditScore": 720,
+  "claimsInLast3Years": 1,
+  "totalClaimAmount": 2500.0,
+  "lastClaimDate": "2023-06-15",
+  "drivingViolations": 0,
+  "atFaultAccidents": 0,
+  "dui": false,
+  "yearsLicensed": 10,
+  "yearsWithPreviousInsurer": 5,
+  "previousCancellation": false,
+  "previousDenial": false,
+  "annualIncome": 75000.0,
+  "employmentStatus": "Full-time",
+  "insuranceType": "auto",
+  "age": 32,
+  "address": "Shanghai, Pudong District"
+}
+

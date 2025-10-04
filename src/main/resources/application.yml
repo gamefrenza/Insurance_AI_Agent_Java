@@ -53,10 +53,16 @@ insurance:
       max: 75
     risk-factors:
       high-risk-threshold: 0.7
+    use-ml: false  # Set to true to enable ML (Weka Decision Tree)
+    use-external-credit-check: false  # Set to true to use external credit API
   external-api:
     guidewire:
       url: ${GUIDEWIRE_API_URL:https://api.guidewire.example.com}
       api-key: ${GUIDEWIRE_API_KEY:demo-api-key}
       timeout-seconds: 30
+      enabled: false  # Enable when you have real API credentials
+    credit-score:
+      url: ${CREDIT_SCORE_API_URL:https://api.experian.example.com}
+      api-key: ${CREDIT_SCORE_API_KEY:demo-api-key}
       enabled: false  # Enable when you have real API credentials
 
