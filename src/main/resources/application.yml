@@ -1,0 +1,55 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api/v1
+
+spring:
+  application:
+    name: insurance-ai-agent
+  
+  session:
+    store-type: memory
+    timeout: 30m
+
+# OpenAI Configuration
+openai:
+  api:
+    key: ${OPENAI_API_KEY:your-api-key-here}
+    url: https://api.openai.com/v1/chat/completions
+    model: gpt-4
+    max-tokens: 1000
+    temperature: 0.7
+
+# AES Encryption Configuration
+encryption:
+  aes:
+    secret-key: ${AES_SECRET_KEY:MySecretKey12345MySecretKey12345} # 32 chars for AES-256
+
+# Logging Configuration
+logging:
+  level:
+    root: INFO
+    com.xai.insuranceagent: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: logs/insurance-agent.log
+    max-size: 10MB
+    max-history: 30
+
+# Insurance Business Rules
+insurance:
+  quoting:
+    base-rate:
+      auto: 1200.0
+      home: 800.0
+      life: 500.0
+      health: 600.0
+  underwriting:
+    age:
+      min: 18
+      max: 75
+    risk-factors:
+      high-risk-threshold: 0.7
+

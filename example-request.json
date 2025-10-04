@@ -1,0 +1,13 @@
+{
+  "customer": {
+    "age": 25,
+    "vehicle": "Tesla Model 3",
+    "address": "Beijing, Chaoyang District",
+    "insuranceType": "auto",
+    "name": "Zhang Wei",
+    "email": "zhangwei@example.com",
+    "phone": "+86-13812345678"
+  },
+  "additionalContext": "First time insurance customer"
+}
+

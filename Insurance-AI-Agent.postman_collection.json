@@ -1,0 +1,343 @@
+{
+	"info": {
+		"_postman_id": "insurance-ai-agent-001",
+		"name": "Insurance AI Agent API",
+		"description": "Complete API collection for Insurance AI Agent",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Health Check",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/insurance/health",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"insurance",
+						"health"
+					]
+				},
+				"description": "Check if the application is running"
+			},
+			"response": []
+		},
+		{
+			"name": "Process Auto Insurance",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"customer\": {\n    \"age\": 25,\n    \"vehicle\": \"Tesla Model 3\",\n    \"address\": \"Beijing, Chaoyang District\",\n    \"insuranceType\": \"auto\",\n    \"name\": \"Zhang Wei\",\n    \"email\": \"zhangwei@example.com\",\n    \"phone\": \"+86-13812345678\"\n  },\n  \"additionalContext\": \"First time insurance customer\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/insurance/process",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"insurance",
+						"process"
+					]
+				},
+				"description": "Process auto insurance request for a Tesla Model 3"
+			},
+			"response": []
+		},
+		{
+			"name": "Process Life Insurance",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"customer\": {\n    \"age\": 35,\n    \"address\": \"Shanghai, Pudong District\",\n    \"insuranceType\": \"life\",\n    \"name\": \"Li Ming\",\n    \"occupation\": \"Software Engineer\",\n    \"smoker\": false,\n    \"email\": \"liming@example.com\",\n    \"phone\": \"+86-13987654321\"\n  }\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/insurance/process",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"insurance",
+						"process"
+					]
+				},
+				"description": "Process life insurance request for non-smoker engineer"
+			},
+			"response": []
+		},
+		{
+			"name": "Process Home Insurance",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"customer\": {\n    \"age\": 45,\n    \"address\": \"Guangzhou, Tianhe District\",\n    \"insuranceType\": \"home\",\n    \"name\": \"Wang Fang\",\n    \"propertyType\": \"Apartment\",\n    \"propertyValue\": 800000.0,\n    \"email\": \"wangfang@example.com\"\n  }\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/insurance/process",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"insurance",
+						"process"
+					]
+				},
+				"description": "Process home insurance for an apartment"
+			},
+			"response": []
+		},
+		{
+			"name": "Process Health Insurance",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"customer\": {\n    \"age\": 28,\n    \"address\": \"Shenzhen, Nanshan District\",\n    \"insuranceType\": \"health\",\n    \"name\": \"Chen Yu\",\n    \"medicalHistory\": \"None\",\n    \"email\": \"chenyu@example.com\"\n  }\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/insurance/process",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"insurance",
+						"process"
+					]
+				},
+				"description": "Process health insurance with no medical history"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Session Info",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/insurance/session",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"insurance",
+						"session"
+					]
+				},
+				"description": "Get current session information"
+			},
+			"response": []
+		},
+		{
+			"name": "Clear Session",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/insurance/session",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"insurance",
+						"session"
+					]
+				},
+				"description": "Clear current session"
+			},
+			"response": []
+		},
+		{
+			"name": "Validation Error Test - Age Too Young",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"customer\": {\n    \"age\": 15,\n    \"address\": \"Test Address\",\n    \"insuranceType\": \"auto\",\n    \"vehicle\": \"Test Car\"\n  }\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/insurance/process",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"insurance",
+						"process"
+					]
+				},
+				"description": "Test validation: Age must be at least 18"
+			},
+			"response": []
+		},
+		{
+			"name": "Validation Error Test - Invalid Insurance Type",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"customer\": {\n    \"age\": 25,\n    \"address\": \"Test Address\",\n    \"insuranceType\": \"invalid_type\"\n  }\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/insurance/process",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"insurance",
+						"process"
+					]
+				},
+				"description": "Test validation: Insurance type must be one of: auto, home, life, health"
+			},
+			"response": []
+		},
+		{
+			"name": "High Risk Auto Insurance (Young + Sports Car)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"customer\": {\n    \"age\": 22,\n    \"vehicle\": \"Ferrari F8 Sports Car\",\n    \"address\": \"Beijing, Chaoyang District\",\n    \"insuranceType\": \"auto\",\n    \"name\": \"Young Driver\",\n    \"email\": \"young@example.com\"\n  }\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/insurance/process",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"insurance",
+						"process"
+					]
+				},
+				"description": "Test high-risk scenario: Young driver with sports car"
+			},
+			"response": []
+		},
+		{
+			"name": "High Risk Life Insurance (Smoker + High-risk Job)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"customer\": {\n    \"age\": 40,\n    \"address\": \"Shanghai, Pudong District\",\n    \"insuranceType\": \"life\",\n    \"name\": \"High Risk Customer\",\n    \"occupation\": \"Pilot\",\n    \"smoker\": true,\n    \"email\": \"highrisk@example.com\"\n  }\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/insurance/process",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"insurance",
+						"process"
+					]
+				},
+				"description": "Test high-risk scenario: Smoker with high-risk occupation"
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080/api/v1",
+			"type": "string"
+		}
+	]
+}
+
