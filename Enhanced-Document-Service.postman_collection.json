@@ -1,0 +1,120 @@
+{
+	"info": {
+		"_postman_id": "enhanced-document-service-001",
+		"name": "Enhanced Document Filling Service",
+		"description": "Complete test collection for Enhanced Document Filling Service with PDF processing and electronic signature",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Fill Auto Policy Document",
+			"request": {
+				"method": "POST",
+				"header": [{"key": "Content-Type", "value": "application/json"}],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"customerId\": \"CUST-001\",\n  \"documentType\": \"policy\",\n  \"insuranceType\": \"auto\",\n  \"customerData\": {\n    \"name\": \"Zhang Wei\",\n    \"age\": 30,\n    \"address\": \"123 Chaoyang Road, Beijing\",\n    \"email\": \"zhangwei@example.com\",\n    \"phone\": \"+86-13812345678\",\n    \"occupation\": \"Engineer\",\n    \"gender\": \"male\",\n    \"dateOfBirth\": \"1994-05-15\"\n  },\n  \"policyData\": {\n    \"policyNumber\": \"POL-2024-AUTO-001\",\n    \"policyType\": \"Comprehensive Auto Insurance\",\n    \"premiumAmount\": 1560.0,\n    \"currency\": \"USD\",\n    \"effectiveDate\": \"2024-10-01\",\n    \"expiryDate\": \"2025-10-01\",\n    \"coverageAmount\": \"50000\",\n    \"deductible\": \"500\"\n  },\n  \"outputFormat\": \"FILE_PATH\",\n  \"encryptOutput\": true,\n  \"requireSignature\": false\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/insurance/document/fill",
+					"host": ["{{baseUrl}}"],
+					"path": ["insurance", "document", "fill"]
+				},
+				"description": "Fill auto policy document with customer and policy data"
+			}
+		},
+		{
+			"name": "Fill Document with Base64 Output",
+			"request": {
+				"method": "POST",
+				"header": [{"key": "Content-Type", "value": "application/json"}],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"customerId\": \"CUST-002\",\n  \"documentType\": \"application\",\n  \"insuranceType\": \"home\",\n  \"customerData\": {\n    \"name\": \"Li Ming\",\n    \"age\": 35,\n    \"address\": \"456 Pudong Ave, Shanghai\",\n    \"email\": \"liming@example.com\",\n    \"phone\": \"+86-13987654321\"\n  },\n  \"outputFormat\": \"BASE64\",\n  \"encryptOutput\": false,\n  \"requireSignature\": false\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/insurance/document/fill",
+					"host": ["{{baseUrl}}"],
+					"path": ["insurance", "document", "fill"]
+				},
+				"description": "Fill document and return base64 encoded content"
+			}
+		},
+		{
+			"name": "Fill Document with Both Outputs",
+			"request": {
+				"method": "POST",
+				"header": [{"key": "Content-Type", "value": "application/json"}],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"customerId\": \"CUST-003\",\n  \"documentType\": \"quote\",\n  \"insuranceType\": \"health\",\n  \"customerData\": {\n    \"name\": \"Wang Fang\",\n    \"age\": 40,\n    \"address\": \"789 Tianhe Road, Guangzhou\",\n    \"email\": \"wangfang@example.com\",\n    \"phone\": \"+86-13698745632\"\n  },\n  \"policyData\": {\n    \"policyNumber\": \"QUOTE-2024-HLT-001\",\n    \"premiumAmount\": 850.0,\n    \"currency\": \"USD\"\n  },\n  \"outputFormat\": \"BOTH\",\n  \"encryptOutput\": true,\n  \"requireSignature\": false\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/insurance/document/fill",
+					"host": ["{{baseUrl}}"],
+					"path": ["insurance", "document", "fill"]
+				},
+				"description": "Fill document and return both file path and base64"
+			}
+		},
+		{
+			"name": "Fill Document with Electronic Signature",
+			"request": {
+				"method": "POST",
+				"header": [{"key": "Content-Type", "value": "application/json"}],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"customerId\": \"CUST-004\",\n  \"documentType\": \"policy\",\n  \"insuranceType\": \"life\",\n  \"customerData\": {\n    \"name\": \"Chen Yu\",\n    \"age\": 45,\n    \"address\": \"321 Nanshan Blvd, Shenzhen\",\n    \"email\": \"chenyu@example.com\",\n    \"phone\": \"+86-13512348765\"\n  },\n  \"policyData\": {\n    \"policyNumber\": \"POL-2024-LIFE-001\",\n    \"policyType\": \"Term Life Insurance\",\n    \"premiumAmount\": 2000.0,\n    \"currency\": \"USD\"\n  },\n  \"outputFormat\": \"FILE_PATH\",\n  \"encryptOutput\": false,\n  \"requireSignature\": true,\n  \"signerEmail\": \"chenyu@example.com\",\n  \"signerName\": \"Chen Yu\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/insurance/document/fill",
+					"host": ["{{baseUrl}}"],
+					"path": ["insurance", "document", "fill"]
+				},
+				"description": "Fill document and send for electronic signature"
+			}
+		},
+		{
+			"name": "Async Document Filling",
+			"request": {
+				"method": "POST",
+				"header": [{"key": "Content-Type", "value": "application/json"}],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"customerId\": \"CUST-005\",\n  \"documentType\": \"claim\",\n  \"insuranceType\": \"auto\",\n  \"customerData\": {\n    \"name\": \"Liu Wei\",\n    \"age\": 33,\n    \"address\": \"555 Wangjing Street, Beijing\",\n    \"email\": \"liuwei@example.com\",\n    \"phone\": \"+86-13823456789\"\n  },\n  \"outputFormat\": \"FILE_PATH\",\n  \"encryptOutput\": false,\n  \"requireSignature\": false\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/insurance/document/fill-async",
+					"host": ["{{baseUrl}}"],
+					"path": ["insurance", "document", "fill-async"]
+				},
+				"description": "Fill document asynchronously"
+			}
+		},
+		{
+			"name": "Fill with Additional Fields",
+			"request": {
+				"method": "POST",
+				"header": [{"key": "Content-Type", "value": "application/json"}],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"customerId\": \"CUST-006\",\n  \"documentType\": \"policy\",\n  \"insuranceType\": \"auto\",\n  \"customerData\": {\n    \"name\": \"Zhao Min\",\n    \"age\": 28,\n    \"address\": \"999 Haidian Road, Beijing\",\n    \"email\": \"zhaomin@example.com\",\n    \"phone\": \"+86-13745698321\",\n    \"additionalFields\": {\n      \"driverLicense\": \"B1234567890\",\n      \"vehicleVIN\": \"1HGBH41JXMN109186\",\n      \"vehicleColor\": \"Blue\"\n    }\n  },\n  \"outputFormat\": \"FILE_PATH\",\n  \"encryptOutput\": false,\n  \"requireSignature\": false\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/insurance/document/fill",
+					"host": ["{{baseUrl}}"],
+					"path": ["insurance", "document", "fill"]
+				},
+				"description": "Fill document with custom additional fields"
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080/api/v1",
+			"type": "string"
+		}
+	]
+}
+

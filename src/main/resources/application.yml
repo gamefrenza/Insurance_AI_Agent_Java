@@ -65,4 +65,13 @@ insurance:
       url: ${CREDIT_SCORE_API_URL:https://api.experian.example.com}
       api-key: ${CREDIT_SCORE_API_KEY:demo-api-key}
       enabled: false  # Enable when you have real API credentials
+    docusign:
+      url: ${DOCUSIGN_API_URL:https://demo.docusign.net/restapi}
+      api-key: ${DOCUSIGN_API_KEY:demo-api-key}
+      enabled: false  # Enable when you have real API credentials
+  
+  document:
+    template-directory: ${TEMPLATE_DIR:./templates}
+    output-directory: ${OUTPUT_DIR:./output/documents}
+    use-docusign: false  # Set to true to enable electronic signature
 

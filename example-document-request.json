@@ -1,0 +1,33 @@
+{
+  "customerId": "CUST-2024-001",
+  "documentType": "policy",
+  "insuranceType": "auto",
+  "customerData": {
+    "name": "Zhang Wei",
+    "age": 30,
+    "address": "123 Chaoyang Road, Beijing, China",
+    "email": "zhangwei@example.com",
+    "phone": "+86-13812345678",
+    "occupation": "Engineer",
+    "gender": "male",
+    "dateOfBirth": "1994-05-15",
+    "nationalId": "110101199405151234"
+  },
+  "policyData": {
+    "policyNumber": "POL-2024-AUTO-001",
+    "policyType": "Comprehensive Auto Insurance",
+    "premiumAmount": 1560.0,
+    "currency": "USD",
+    "effectiveDate": "2024-10-01",
+    "expiryDate": "2025-10-01",
+    "coverageAmount": "50000",
+    "deductible": "500",
+    "terms": "Standard terms and conditions apply"
+  },
+  "outputFormat": "BOTH",
+  "encryptOutput": true,
+  "requireSignature": true,
+  "signerEmail": "zhangwei@example.com",
+  "signerName": "Zhang Wei"
+}
+
